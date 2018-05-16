@@ -10,12 +10,17 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainPresenter implements MainContract.Presenter {
 
-    private MainContract.View mView;
     private final MyService mService;
+    private MainContract.View mView;
 
     MainPresenter(MainContract.View view) {
-        mService = MyService.Creator.newMyService();
+        this(view, MyService.Creator.newMyService());
+    }
+
+    // Added for testing as no DI present
+    MainPresenter(MainContract.View view, MyService service) {
         mView = view;
+        mService = service;
     }
 
     @Override
@@ -49,5 +54,9 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onDestroy() {
         mView = null;
+    }
+
+    public MainContract.View getView() {
+        return mView;
     }
 }
